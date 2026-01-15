@@ -9,20 +9,22 @@ pipeline {
             }
         }
 
-        stage('code smell check') {
+        stage('Code Quality - SonarCloud') {
             steps {
-                script {
-                    sh 'echo "testing with sonarQube"'
-                    sh """
-                        sonar-scanner \
-                        -Dsonar.projectKey=chat_app_repo \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=https://sonarcloud.io \
-                        -Dsonar.login=56d5f434209e6470ff604d380ad9dbb4cb88efc7
-                    """
-                }
+              script {
+                    def scannerHome = tool 'sonar-scanner'
+                        withSonarQubeEnv('sonarcloud') {
+                            sh """
+                              ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.projectKey=avinash-sharma-121_chat_app_repo \
+                                -Dsonar.organization=avinash-sharma-121 \
+                                -Dsonar.sources=.
+                            """
+                        }
+              }
             }
         }
+
 
 /*
         stage('Test') {
@@ -44,8 +46,9 @@ pipeline {
                 }
             }
         }
+        */
     }
-    */
+    
 
     post {
         success {
@@ -57,4 +60,3 @@ pipeline {
     }
 }
 
-}
