@@ -1,0 +1,33 @@
+frontend:
+  replicaCount: 1
+  image:
+    repository: avisharma82/chat_app_frontend
+    tag: v3
+  service:
+    port: 80
+  ingress:
+    enabled: true
+    host: localhost
+
+backend:
+  replicaCount: 1
+  image:
+    repository: avisharma82/chat_app_backend
+    tag: v7
+  service:
+    port: 5001
+
+database:
+  image:
+    repository: mongo
+    tag: latest
+
+  DBname: chatApp
+  user: root
+  password: admin
+
+  persistence:
+    enabled: true
+    size: 2Gi
+    accessMode: ReadWriteOnce
+    storageClass: standard   # gp2 (EKS), standard (minikube)
