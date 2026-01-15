@@ -4,11 +4,27 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master',
-                    url: 'https://github.com/iemafzalhassan/full-stack_chatApp.git'
+                git branch: 'main',
+                    url: 'https://github.com/avinash-sharma-121/chat_app_repo.git'
             }
         }
 
+        stage('code smell check') {
+            steps {
+                script {
+                    sh 'echo "testing with sonarQube"'
+                    sh """
+                        sonar-scanner \
+                        -Dsonar.projectKey=chat_app_repo \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=https://sonarcloud.io \
+                        -Dsonar.login=56d5f434209e6470ff604d380ad9dbb4cb88efc7
+                    """
+                }
+            }
+        }
+
+/*
         stage('Test') {
             steps {
                 script {
@@ -29,6 +45,7 @@ pipeline {
             }
         }
     }
+    */
 
     post {
         success {
