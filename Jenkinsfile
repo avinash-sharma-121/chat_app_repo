@@ -8,7 +8,7 @@ pipeline {
                     url: 'https://github.com/avinash-sharma-121/chat_app_repo.git'
             }
         }
-        /*
+
         stage('Code Quality - SonarCloud') {
             steps {
               script {
@@ -21,11 +21,10 @@ pipeline {
                                 -Dsonar.sources=.
                             """
                         }
-              }
+               }
             }
         }
-        */
-
+        
         stage('Generated tag for docker image') {
             steps {
                 script {
@@ -40,7 +39,7 @@ pipeline {
 
         stage("docker build") {
             parallel {
-                
+
                 stage("build fronteend") {
                     steps{
                         script {
@@ -53,8 +52,7 @@ pipeline {
                         }
                     }
                 }
-                
-                
+                               
                 stage("build backend") {
                     steps{
                         script {
@@ -75,15 +73,44 @@ pipeline {
                 stage('frontend scanner'){
                     steps{
                         sh "echo Scanning Frontend Docker Image"
+                        sh "trivy image --severity HIGH,CRITICAL avisharma82/chat_app_frontend:${env.IMAGE_TAG}"
                     }
                 }
                 stage('backend scanner'){
                     steps{
                         sh "echo Scanning Backend Docker Image"
+                        sh "trivy image --severity HIGH,CRITICAL avisharma82/chat_app_backend:${env.IMAGE_TAG}"
                     }
+                }
             }
         }
 
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    sh """
+                        echo "Pushing Frontend Docker Image to Docker Hub"
+                        docker push avisharma82/chat_app_frontend:${env.IMAGE_TAG}
+                        
+                        echo "Pushing Backend Docker Image to Docker Hub"
+                        docker push avisharma82/chat_app_backend:${env.IMAGE_TAG}
+                    """
+                }
+            }
+        }
+
+        stage('git push tag') {
+            steps {
+                script {
+                    sh """
+                        git config --global user.email "kumaravinashsharma81@gmail.com" 
+                        git config --global user.name "avinash-sharma-121"
+                        git tag -a v${env.IMAGE_TAG} -m "Tagging version ${env.IMAGE_TAG}"
+                        git push origin v${env.IMAGE_TAG}
+                    """
+                }
+            }
+        }
 
 /*
         stage('Test') {
