@@ -8,7 +8,7 @@ pipeline {
                     url: 'https://github.com/avinash-sharma-121/chat_app_repo.git'
             }
         }
-
+        /*
         stage('Code Quality - SonarCloud') {
             steps {
               script {
@@ -22,6 +22,65 @@ pipeline {
                             """
                         }
               }
+            }
+        }
+        */
+
+        stage('Generated tag for docker image') {
+            steps {
+                script {
+                    env.IMAGE_TAG = sh (
+                        script: "echo \$(git rev-parse --short HEAD)",
+                        returnStdout: true
+                    ).trim()
+                    echo "Generated Image Tag: ${env.IMAGE_TAG}"
+                }
+            }
+        }
+
+        stage("docker build") {
+            parallel {
+                
+                stage("build fronteend") {
+                    steps{
+                        script {
+                            echo "Building Frontend Docker Image with tag: ${env.IMAGE_TAG}"
+                            sh """
+                            pwd
+                            cd frontend
+                            docker build -t avisharma82/chat_app_frontend:${env.IMAGE_TAG} .
+                            """
+                        }
+                    }
+                }
+                
+                
+                stage("build backend") {
+                    steps{
+                        script {
+                            echo "Building Backend Docker Image with tag: ${env.IMAGE_TAG}"
+                            sh """
+                            pwd
+                            cd backend
+                            docker build -t avisharma82/chat_app_backend:${env.IMAGE_TAG} .
+                            """
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('trivy scanner') {
+            parallel {
+                stage('frontend scanner'){
+                    steps{
+                        sh "echo Scanning Frontend Docker Image"
+                    }
+                }
+                stage('backend scanner'){
+                    steps{
+                        sh "echo Scanning Backend Docker Image"
+                    }
             }
         }
 
