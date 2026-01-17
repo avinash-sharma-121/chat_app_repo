@@ -8,7 +8,7 @@ pipeline {
                     url: 'https://github.com/avinash-sharma-121/chat_app_repo.git'
             }
         }
-/*
+
         stage('Code Quality - SonarCloud') {
             steps {
               script {
@@ -24,7 +24,7 @@ pipeline {
                }
             }
         }
-*/
+
         stage('Generated tag for docker image') {
             steps {
                 script {
@@ -36,7 +36,7 @@ pipeline {
                 }
             }
         }
-/*
+
         stage("docker build") {
             parallel {
 
@@ -98,19 +98,15 @@ pipeline {
                 }
             }
         }
-*/
-/*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 */
 
-
-        stage('update k8s deployment file') {
+        stage('update k8s deployment helm values') {
             steps {
                 script {
                     sh '''
-                        #cd helm_chat_app/
-                        sed -i 's|tag: .*|tag: "'${IMAGE_TAG}'"|g' helm_chat_app/values.yaml
+                        sed -i '' 's|tag: .*|tag: '${IMAGE_TAG}'|g' helm_chat_app/values.yaml
 
-                        #sed -i 's|avinashsharma82/chat_app_frontend:.*|avinashsharma82/chat_app_frontend:'${IMAGE_TAG}'|g' values.yaml
-                        #sed -i 's|avinashsharma82/chat_app_backend:.*|avinashsharma82/chat_app_backend:'${IMAGE_TAG}'|g' values.yaml
+                        #sed -i '' 's|avinashsharma82/chat_app_frontend:.*|avinashsharma82/chat_app_frontend:'${IMAGE_TAG}'|g' values.yaml
+                        #sed -i '' 's|avinashsharma82/chat_app_backend:.*|avinashsharma82/chat_app_backend:'${IMAGE_TAG}'|g' values.yaml
                     '''
                 }
             }
@@ -120,49 +116,28 @@ pipeline {
         stage('git push tag') {
             steps {
                 script {
-                 withCredentials([gitUsernamePassword(credentialsId: 'github_cre', gitToolName: 'Default')]) {
+                 withCredentials([gitUsernamePassword(credentialsId: 'github_cred1', gitToolName: 'Default')]) {
                     sh '''
                         # Configure user info for the commit
                         git config user.name "avinash-sharma-121"
                         git config user.email "kumaravinashsharma81@gmail.com"
+
                         # Create and push the tag
                         #git tag -a v${IMAGE_TAG} -m "Tagging version v${IMAGE_TAG}"
+
                         git add .
                         git commit -m "Automated commit from Jenkins"
 
                         # Push changes using the bound credentials
-                        git push https://github.com/avinash-sharma-121/chat_app_repo.git HEAD:main
+                        git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/avinash-sharma-121/chat_app_repo.git HEAD:main
                     '''
+                    }
                 }
             }
-        }
 
         }
-
-/*
-        stage('Test') {
-            steps {
-                script {
-                    sh '''
-                        sleep 15
-                        curl -f http://localhost:5001/health
-                        curl -f http://localhost/ || exit 1
-                    '''
-                }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                script {
-                    sh 'docker-compose up -d --build'
-                }
-            }
-        }
-        */
-    }
     
-
+    }
     post {
         success {
             echo 'Deployment and tests completed successfully!'
