@@ -20,7 +20,7 @@ backend:
 database:
   image:
     repository: mongo
-    tag: 5102262
+    tag: latest
 
   DBname: chatApp
   user: root
