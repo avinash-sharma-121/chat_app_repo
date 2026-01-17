@@ -2,7 +2,7 @@ frontend:
   replicaCount: 1
   image:
     repository: avisharma82/chat_app_frontend
-    tag: v3
+    tag: 5102262
   service:
     port: 80
   ingress:
@@ -13,14 +13,14 @@ backend:
   replicaCount: 1
   image:
     repository: avisharma82/chat_app_backend
-    tag: v7
+    tag: 5102262
   service:
     port: 5001
 
 database:
   image:
     repository: mongo
-    tag: latest
+    tag: 5102262
 
   DBname: chatApp
   user: root
