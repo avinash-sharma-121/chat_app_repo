@@ -2,7 +2,7 @@ frontend:
   replicaCount: 1
   image:
     repository: avisharma82/chat_app_frontend
-    tag: e9287dd
+    tag: df26157
   service:
     port: 80
   ingress:
@@ -13,7 +13,7 @@ backend:
   replicaCount: 1
   image:
     repository: avisharma82/chat_app_backend
-    tag: e9287dd
+    tag: df26157
   service:
     port: 5001
 
