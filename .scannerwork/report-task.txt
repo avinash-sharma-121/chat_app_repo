@@ -1,0 +1,7 @@
+organization=avinash-sharma-121
+projectKey=avinash-sharma-121_chat_app_repo
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.78371
+dashboardUrl=https://sonarcloud.io/dashboard?id=avinash-sharma-121_chat_app_repo
+ceTaskId=AZvNPf78pAGWw-Hk0S2R
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZvNPf78pAGWw-Hk0S2R
