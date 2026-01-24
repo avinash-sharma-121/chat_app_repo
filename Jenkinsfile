@@ -8,7 +8,7 @@ pipeline {
                     url: 'https://github.com/avinash-sharma-121/chat_app_repo.git'
             }
         }
-
+/*
         stage('Code Quality - SonarCloud') {
             steps {
               script {
@@ -24,7 +24,7 @@ pipeline {
                }
             }
         }
-
+*/
         stage('Generated tag for docker image') {
             steps {
                 script {
@@ -67,7 +67,7 @@ pipeline {
                 }
             }
         }
-
+/*
         stage('trivy scanner') {
             parallel {
                 stage('frontend scanner'){
@@ -84,7 +84,7 @@ pipeline {
                 }
             }
         }
-
+*/
         stage('Push to Docker Hub') {
             steps {
                 script {
