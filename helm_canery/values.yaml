@@ -7,7 +7,7 @@ frontend:
     port: 80
   ingress:
     enabled: true
-    host: localhost-canery
+    host: localhost
 
 backend:
   replicaCount: 1

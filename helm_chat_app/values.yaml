@@ -7,7 +7,7 @@ frontend:
     port: 80
   ingress:
     enabled: true
-    host: localhost
+    host: localhost-test
 
 backend:
   replicaCount: 1
