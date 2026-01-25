@@ -107,8 +107,12 @@ pipeline {
                         #sed -i '' 's|avinashsharma82/chat_app_frontend:.*|avinashsharma82/chat_app_frontend:'${IMAGE_TAG}'|g' values.yaml
                         #sed -i '' 's|avinashsharma82/chat_app_backend:.*|avinashsharma82/chat_app_backend:'${IMAGE_TAG}'|g' values.yaml
                         
-                        sed -i '' '/backend:/,/tag:/s|tag: .*|tag: '${IMAGE_TAG}'|' helm_chat_app/values.yaml
-                        sed -i '' '/frontend:/,/tag:/s|tag: .*|tag: '${IMAGE_TAG}'|' helm_chat_app/values.yaml
+                        #for Local deployment 
+                        #sed -i '' '/backend:/,/tag:/s|tag: .*|tag: '${IMAGE_TAG}'|' helm_chat_app/values.yaml
+                        #sed -i '' '/frontend:/,/tag:/s|tag: .*|tag: '${IMAGE_TAG}'|' helm_chat_app/values.yaml
+                        #for Canery
+                        sed -i '' '/backend:/,/tag:/s|tag: .*|tag: '${IMAGE_TAG}'|' helm_canery/values.yaml
+                        sed -i '' '/frontend:/,/tag:/s|tag: .*|tag: '${IMAGE_TAG}'|' helm_canery/values.yaml
                     '''
                 }
             }
