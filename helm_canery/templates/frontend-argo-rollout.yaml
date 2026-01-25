@@ -11,7 +11,7 @@ spec:
     metadata:
       labels:
         app: frontend
-        version: "{{ .Values.frontend.image.tag }}"
+        version: "v3"
     spec:
       containers:
         - name: frontend
