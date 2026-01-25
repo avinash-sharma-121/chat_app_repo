@@ -1,5 +1,5 @@
 frontend:
-  replicaCount: 1
+  replicaCount: 6
   image:
     repository: avisharma82/chat_app_frontend
     tag: 228cbd2
@@ -7,7 +7,7 @@ frontend:
     port: 80
   ingress:
     enabled: true
-    host: localhost
+    host: localhost-canery
 
 backend:
   replicaCount: 1
