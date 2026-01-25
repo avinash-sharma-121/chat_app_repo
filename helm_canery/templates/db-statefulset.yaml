@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "chat-app.fullname" . }}-db
+spec:
+  serviceName: {{ include "chat-app.fullname" . }}-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: mongo
+          image: "{{ .Values.database.image.repository }}:{{ .Values.database.image.tag }}"
+          ports:
+            - containerPort: 27017
+          env:
+            - name: NODE_ENV
+              value: {{ .Values.database.name }}
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: {{ .Values.database.user }}
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: {{ .Values.database.password }}
+          volumeMounts:
+            - name: chat-app-chat-app-db-pvc
+              mountPath: /data/db
+  volumeClaimTemplates:
+      - metadata:
+           name: chat-app-chat-app-db-pvc
+        spec:
+           accessModes: [ "ReadWriteOnce" ]
+           resources:
+             requests:
+               storage: 1Gi
+               
