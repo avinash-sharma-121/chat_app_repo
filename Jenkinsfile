@@ -113,6 +113,9 @@ pipeline {
                         #for Canery
                         sed -i '' '/backend:/,/tag:/s|tag: .*|tag: '${IMAGE_TAG}'|' helm_canery/values.yaml
                         sed -i '' '/frontend:/,/tag:/s|tag: .*|tag: '${IMAGE_TAG}'|' helm_canery/values.yaml
+                        #for Blue-Green
+                        sed -i '' '/backend:/,/tag:/s|tag: .*|tag: '${IMAGE_TAG}'|' helm_blue_green/values.yaml
+                        sed -i '' '/frontend:/,/tag:/s|tag: .*|tag: '${IMAGE_TAG}'|' helm_blue_green/values.yaml
                     '''
                 }
             }
